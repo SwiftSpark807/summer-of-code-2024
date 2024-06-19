@@ -1,0 +1,109 @@
+@font-face {
+    font-family: 'Gilroy';
+    src:  url('gilroy-bold/gilroy-regular.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+body{
+    background: rgb(0,133,255);
+    background: radial-gradient(circle, rgba(0,133,255,1) 5%, rgba(0,79,152,1) 76%, rgba(0,52,101,1) 97%);
+    font-family: Arial, Helvetica, sans-serif;
+    color: white;
+}
+
+#container{
+    text-align: center;
+    width: 50%;
+    height: 60%;
+    border-radius: 40px;
+    padding-top: 20px;
+    padding-bottom: 20px;
+    margin-left: 25%;
+    margin-top: 7.5%;
+    backdrop-filter: blur(15px);
+    background-color: hsl(216, 46%, 55%, 28%);
+    border: 2px solid hsl(210, 42%, 51%)
+}
+label[for="email"]{
+    width: 200px;
+    text-align: left;
+    font-size: 1.5rem;
+}
+label[for="password"]{
+    width: 200px;
+    text-align: left;
+    font-size: 1.5rem;
+}
+#email-container{
+    width: 100px;
+    text-align: center;
+    margin-left : 80px;
+    margin-bottom: 10px;
+}
+#password-container{
+    width: 170px;
+    text-align: center;
+    margin-left : 50px;
+    margin-bottom: 10px;
+}
+
+#forgot-password-container{
+    width: 200px;
+    font-size: 1.5rem;
+    text-align: center;
+    margin-left : 75px;
+    margin-bottom: 10px;
+}
+   
+a{
+    text-decoration: none;
+    margin-bottom   : 40px;
+}
+#SubmitBtn{
+    margin-top: 30px;
+    background-color: hsla(209, 100%, 20%, 1);
+    color: white;
+    width: 500px;
+    height: 50px;
+    border-radius: 10px;
+    border: none;
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 1.5rem;
+    transition: background-color 0.2s ease-in-out;
+}
+#SubmitBtn:hover{
+    background-color:rgb(0, 80, 155);;
+}
+h1{
+    font-size: 38px;
+    color: white;
+    text-align: left;
+    padding-left: 110px;
+}
+input{
+    width: 500px;
+    height: 50px;
+    border: 1px solid grey;
+    border-radius: 10px;
+    padding-left: 20px;
+    font-size: 1rem;
+}
+.social{
+    width: 150px;
+    height: 50px;
+    background-color: white;
+    margin-left: 20x;
+    margin-right: 20px;
+    border-radius: 10px;
+    border: 1px solid grey;
+}
+.social img{
+    padding-top :2px ;
+    width:26px;
+    height:26px;
+}
+
+#password{
+    margin-bottom: 10px;
+}
