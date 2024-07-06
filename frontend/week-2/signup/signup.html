@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Signup</title>
+   <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    
+    <div id="container">
+        
+        <h1 class="left">Signup</h1>
+        <div id="input-container">
+            <div id="admin-info"> 
+            <select id="Admin" class="left">
+                <option value="1">Admin</option>
+                <option value="2">Cashier</option>
+                
+            </select>
+            </div>
+        <div id="user-container" class="left">
+            <label for="username" >Username</label><br>
+        </div>
+        <input type="textbox" id="username" placeholder="username" required><br>
+        <p class="left"id="username-messge"></p><br>
+
+        <div id="email-container" class="left">
+            <label for="email" >Email</label><br>
+        </div>
+        <input type="textbox" id="email" placeholder="username@gmail.com" required><br>
+        <p class="left"id="email-messge"></p><br>
+
+       
+
+
+        <div id="password-container" class="left">
+            <label for="password" class="left">Password</label><br>
+            
+        </div>
+        <input type="textbox" id="password" placeholder = "Password" required><br>
+        <p class="left"id="password-messge"></p><br>
+    
+        <div id="confirm-pass-container" class="left">
+            <label for="confirmpass" >Confirm Password</label><br>
+        </div>
+        <input type="textbox" id="confirmpass" placeholder="Confirm" required><br>
+        <p class="left"id="confirm-pass-message"></p><br>
+        <button id = "SubmitBtn">Sign Up</button><br>
+        </div>
+        <p>or continue with</p>
+        <div id="options">
+            <button class="social" id = "Google"><img src="/frontend/week-2/images/google.png" alt="google" ></button>
+            <button class="social" id = "Google"><img src="/frontend/week-2/images/github.png" alt="github"></button>
+            <button class="social" id = "Google"><img src="/frontend/week-2/images/facebook.png" alt="facebook" ></button><br>
+        </div>
+        <p>Existing User? </p>     <a href="/frontend/week-2/login/login.html">Login with your account</a><br>
+      
+    </div>
+ 
+
+    <script src="script.js"></script>
+</body>
+</html>
