@@ -19,7 +19,7 @@ class AddProduct extends StatefulWidget {
 }
 
 class _AddProductState extends State<AddProduct> {
-  String _scanResult = "Unknown";
+  String _scanResult = "";
   File? _imageFile;
 
   final TextEditingController nameController = TextEditingController();
@@ -173,9 +173,22 @@ class _AddProductState extends State<AddProduct> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(
-                    "Scan Result:",
-                    style: TextStyle(color: Colors.white, fontSize: 18),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        "Scan a Barcode for thr Product:",
+                        style: TextStyle(color: Colors.white, fontSize: 18),
+                      ),
+                      IconButton(
+                        onPressed: () => scanBarcode(context),
+                        icon: Icon(
+                          Icons.qr_code_2,
+                          color: const Color.fromRGBO(218, 192, 163, 1),
+                          size: 30,
+                        ),
+                      )
+                    ],
                   ),
                   SizedBox(height: 10),
                   Text(
@@ -239,28 +252,6 @@ class _AddProductState extends State<AddProduct> {
                       },
                       child: Text(
                         "Pick Image",
-                        style: TextStyle(
-                          fontFamily: "Inter",
-                          fontWeight: FontWeight.w900,
-                          color: const Color.fromARGB(255, 0, 0, 0),
-                          fontSize: 20,
-                        ),
-                      ),
-                    ),
-                  ),
-                  SizedBox(height: 20),
-                  SizedBox(
-                    width: double.infinity,
-                    height: 50.0,
-                    child: ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: const Color.fromRGBO(218, 192, 163, 1),
-                      ),
-                      onPressed: () {
-                        scanBarcode(context);
-                      },
-                      child: Text(
-                        "Scan Barcode",
                         style: TextStyle(
                           fontFamily: "Inter",
                           fontWeight: FontWeight.w900,

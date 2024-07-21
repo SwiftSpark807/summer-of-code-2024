@@ -2,18 +2,20 @@ import 'package:flutter/material.dart';
 import 'package:flutter_application_1/components/textLabel.dart';
 import 'package:flutter_application_1/components/textfield.dart';
 import 'package:flutter_application_1/home.dart';
-import 'package:flutter_application_1/user_auth/auth_implementation/firebase_auth_implementation.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'models/userModel.dart';
 
-class SignupPage extends StatefulWidget {
+class CredPage extends StatefulWidget {
+  final String email;
+
+  CredPage({required this.email});
+
   @override
-  _SignupPage createState() => _SignupPage();
+  _CredPage createState() => _CredPage();
 }
 
-class _SignupPage extends State<SignupPage> {
-  final FireBaseAuthServices _auth = FireBaseAuthServices();
+class _CredPage extends State<CredPage> {
   final TextEditingController fullNameController = TextEditingController();
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passWordController = TextEditingController();
@@ -21,44 +23,44 @@ class _SignupPage extends State<SignupPage> {
   final TextEditingController admnController = TextEditingController();
 
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  Future<void> saveUsernameToFirestore(String uid, String username) async {
-    await FirebaseFirestore.instance.collection('users').doc(uid).set({
-      'username': username,
-    });
+
+  @override
+  void initState() {
+    super.initState();
+    emailController.text = widget.email;
   }
 
-  Future<void> signup() async {
+  Future<void> updateDetails() async {
     String username = fullNameController.text;
-    String email = emailController.text;
     String password = passWordController.text;
-
-    UserCredential userCredential = await FirebaseAuth.instance
-        .createUserWithEmailAndPassword(email: email, password: password);
-    User? user = await _auth.signUpWithEmailAndPassword(email, password);
-    if (user != null) {
-      await saveUsernameToFirestore(user.uid, username);
-      print("User created");
-    } else {
-      print("some error");
-    }
-    if (!_formKey.currentState!.validate()) {
-      return;
-    }
-    final newUser = MyUser(
-      password: passWordController.text,
-      phoneNumber: phoneController.text,
-      name: fullNameController.text,
-    );
-    final docRef = FirebaseFirestore.instance
+    String phoneNo = phoneController.text;
+    String position = admnController.text;
+    final myUser = MyUser(
+        name: username,
+        password: password,
+        phoneNumber: phoneNo,
+        access: position);
+    final docRef = position.toLowerCase() == 'cashier'
+        ? FirebaseFirestore.instance
+            .collection("Cashiers")
+            .doc(widget.email)
+            .withConverter(
+                fromFirestore: MyUser.fromFirestore,
+                toFirestore: (MyUser myUser, options) => myUser.toFirestore())
+        : FirebaseFirestore.instance
+            .collection("Admins")
+            .doc(widget.email)
+            .withConverter(
+                fromFirestore: MyUser.fromFirestore,
+                toFirestore: (MyUser myUser, options) => myUser.toFirestore());
+    await docRef.set(myUser);
+    final docref = FirebaseFirestore.instance
         .collection("Users")
-        .doc(userCredential.user!.email!)
+        .doc(widget.email)
         .withConverter(
-          fromFirestore: MyUser.fromFirestore,
-          toFirestore: (MyUser newUser, options) => newUser.toFirestore(),
-        );
-
-    await docRef.set(newUser);
-
+            fromFirestore: MyUser.fromFirestore,
+            toFirestore: (MyUser myUser, options) => myUser.toFirestore());
+    await docref.set(myUser);
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(content: Text('Signup Successful')),
     );
@@ -114,14 +116,7 @@ class _SignupPage extends State<SignupPage> {
                         obscureText: false,
                       ),
                       SizedBox(height: 39),
-                      MyLabel(check: "Email"),
-                      SizedBox(height: 12),
-                      MyTextfield(
-                        controller: emailController,
-                        hintText: "Email",
-                        obscureText: false,
-                      ),
-                      SizedBox(height: 39),
+                      MyLabel(check: widget.email),
                       MyLabel(check: "Password"),
                       SizedBox(height: 12),
                       MyTextfield(
@@ -152,7 +147,7 @@ class _SignupPage extends State<SignupPage> {
                                     const Color.fromRGBO(218, 192, 163, 1),
                               ),
                               onPressed: () {
-                                signup();
+                                updateDetails();
                               },
                               child: Text("Sign Up",
                                   style: TextStyle(
@@ -164,6 +159,4 @@ class _SignupPage extends State<SignupPage> {
                   ))),
         ));
   }
-
-  void _signUp() async {}
 }

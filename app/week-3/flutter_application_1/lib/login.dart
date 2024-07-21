@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/AdminHome.dart';
 import 'package:flutter_application_1/components/textfield.dart';
 import 'package:flutter_application_1/components/toast.dart';
 import 'package:flutter_application_1/home.dart';
@@ -6,7 +7,9 @@ import 'package:flutter_application_1/loading_provider.dart';
 import 'package:flutter_application_1/user_auth/auth_implementation/firebase_auth_implementation.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:provider/provider.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'signup.dart';
+import 'FormAfterGoogle.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 class SecondPage extends StatefulWidget {
@@ -41,8 +44,17 @@ class _SecondPage extends State<SecondPage> {
     });
     if (user != null) {
       print("Logged In");
-      Navigator.pushReplacement(
-          context, MaterialPageRoute(builder: (context) => HomePage()));
+      final userRef =
+          await FirebaseFirestore.instance.collection('Users').doc(email).get();
+      final userData = userRef.data();
+      if (userData!['access'] == 'cashier') {
+        Navigator.pushReplacement(
+            context, MaterialPageRoute(builder: (context) => HomePage()));
+      } else {
+        Navigator.pushReplacement(
+            context, MaterialPageRoute(builder: (context) => AdminProfile()));
+      }
+
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('Login Successful')),
       );
@@ -51,7 +63,7 @@ class _SecondPage extends State<SecondPage> {
     }
   }
 
-  _sigInWithGoogle() async {
+  Future<void> _sigInWithGoogle() async {
     final GoogleSignIn _googleSignIn = GoogleSignIn();
     try {
       final GoogleSignInAccount? googleSignInAccount =
@@ -63,11 +75,70 @@ class _SecondPage extends State<SecondPage> {
         final AuthCredential credential = GoogleAuthProvider.credential(
             idToken: googleSignInAuthentication.idToken,
             accessToken: googleSignInAuthentication.accessToken);
-        await _firebaseAuth.signInWithCredential(credential);
-        Navigator.pushReplacement(
-            context, MaterialPageRoute(builder: (context) => HomePage()));
-        ScaffoldMessenger.of(context)
-            .showSnackBar(SnackBar(content: Text('Login Successful')));
+        final UserCredential userCredential =
+            await _firebaseAuth.signInWithCredential(credential);
+
+        final User? user = userCredential.user;
+        if (user != null) {
+          final userEmail = user.email!;
+          // Get the user's document from Firestore using email as ID
+          final userDoc = await FirebaseFirestore.instance
+              .collection('Users')
+              .doc(userEmail)
+              .get();
+
+          if (!userDoc.exists) {
+            // If user document does not exist, create it with email as ID
+            await FirebaseFirestore.instance
+                .collection('Users')
+                .doc(userEmail)
+                .set({
+              'name': user.displayName,
+              'email': userEmail,
+              'phoneNumber': user.phoneNumber, // Add other fields as needed
+            });
+          }
+
+          // Check if any required fields are null
+          final data = userDoc.data();
+          if (data != null) {
+            final isDataComplete = data['name'] != null &&
+                data['access'] != null &&
+                data['password'] != null &&
+                data['phoneNumber'] != null; // Add other fields as needed
+
+            if (isDataComplete) {
+              // All fields are complete, navigate to HomePage
+              if (data['access'] == 'cashier') {
+                Navigator.pushReplacement(context,
+                    MaterialPageRoute(builder: (context) => HomePage()));
+              } else {
+                Navigator.pushReplacement(context,
+                    MaterialPageRoute(builder: (context) => AdminProfile()));
+              }
+              ScaffoldMessenger.of(context)
+                  .showSnackBar(SnackBar(content: Text('Login Successful')));
+            } else {
+              print(data["email"]);
+              // Fields are missing, navigate to CredPage
+              Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => CredPage(
+                            email: userEmail,
+                          )));
+            }
+          } else {
+            print("Hello");
+            // No data found, navigate to CredPage
+            Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => CredPage(
+                          email: userEmail,
+                        )));
+          }
+        }
       }
     } catch (e) {
       showToast(message: "some error occured : ${e}");
@@ -91,7 +162,7 @@ class _SecondPage extends State<SecondPage> {
               padding: const EdgeInsets.fromLTRB(41, 0, 0, 0),
               child: Align(
                   alignment: Alignment.bottomLeft,
-                  child: Text('POS  ',
+                  child: Text('POS  ',
                       style: TextStyle(
                           fontFamily: "JockeyOne",
                           color: Colors.white,

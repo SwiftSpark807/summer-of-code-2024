@@ -85,7 +85,10 @@ class _CashierPortalState extends State<CashierPortal> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: const Color.fromRGBO(16, 44, 87, 1),
       appBar: AppBar(
+        foregroundColor: Colors.white,
+        backgroundColor: const Color.fromARGB(255, 10, 28, 55),
         title: Text('Cashier Portal'),
         actions: [
           if (scannedProducts.isEmpty)
@@ -93,16 +96,25 @@ class _CashierPortalState extends State<CashierPortal> {
               padding: EdgeInsets.only(right: 20.0),
               child: TextButton.icon(
                 onPressed: scanBarcode,
-                icon: Icon(Icons.camera_alt),
-                label: Text('Scan Products'),
+                icon: Icon(
+                  Icons.camera_alt,
+                  color: Colors.black,
+                ),
+                label: Text(
+                  'Scan Products',
+                  style: TextStyle(color: Colors.black),
+                ),
                 style: TextButton.styleFrom(
-                  backgroundColor: Colors.white,
+                  backgroundColor: const Color.fromRGBO(218, 192, 163, 1),
                 ),
               ),
             ),
           if (scannedProducts.isNotEmpty)
             IconButton(
-              icon: Icon(Icons.camera_alt),
+              icon: Icon(
+                Icons.camera_alt,
+                color: const Color.fromRGBO(218, 192, 163, 1),
+              ),
               onPressed: scanBarcode,
             ),
         ],
@@ -114,7 +126,7 @@ class _CashierPortalState extends State<CashierPortal> {
                 ? Center(
                     child: Text(
                       'Scan products to see info',
-                      style: TextStyle(fontSize: 18),
+                      style: TextStyle(fontSize: 18, color: Colors.white),
                     ),
                   )
                 : ListView.builder(
@@ -125,104 +137,111 @@ class _CashierPortalState extends State<CashierPortal> {
                       String? imageUrl = product['imageUrl'];
 
                       return Container(
-                        height: 100,
-                        margin: const EdgeInsets.all(8.0),
+                        height: 120,
+                        margin: const EdgeInsets.all(18.0),
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(20),
-                          color: const Color.fromARGB(255, 94, 94, 94),
+                          color: const Color.fromARGB(255, 21, 59, 116),
                         ),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Padding(
-                              padding: const EdgeInsets.only(left: 8.0),
-                              child: Column(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceEvenly,
-                                children: [
-                                  Text(
-                                    "Name: ${product['name']}",
-                                    style: TextStyle(color: Colors.white),
-                                  ),
-                                  Text(
-                                    "Brand: ${product['brand']}",
-                                    style: TextStyle(color: Colors.white),
-                                  ),
-                                  Text(
-                                    "Quantity: ${product['quantity']}",
-                                    style: TextStyle(color: Colors.white),
-                                  ),
-                                  Text(
-                                    "Price: ${product['price']}",
-                                    style: TextStyle(color: Colors.white),
-                                  ),
-                                  Text(
-                                    "Count: ${productCounts[barcode]}",
-                                    style: TextStyle(color: Colors.white),
-                                  ),
-                                ],
+                        child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.only(left: 8.0),
+                                child: Column(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceEvenly,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      "Name: ${product['name']}",
+                                      style: TextStyle(color: Colors.white),
+                                    ),
+                                    Text(
+                                      "Brand: ${product['brand']}",
+                                      style: TextStyle(color: Colors.white),
+                                    ),
+                                    Text(
+                                      "Quantity: ${product['quantity']}",
+                                      style: TextStyle(color: Colors.white),
+                                    ),
+                                    Text(
+                                      "Price: ${product['price']}",
+                                      style: TextStyle(color: Colors.white),
+                                    ),
+                                    Text(
+                                      "Count: ${productCounts[barcode]}",
+                                      style: TextStyle(color: Colors.white),
+                                    ),
+                                  ],
+                                ),
                               ),
-                            ),
-                            if (imageUrl != null)
-                              FutureBuilder<ImageProvider>(
-                                future: _loadImage(imageUrl),
-                                builder: (context, snapshot) {
-                                  if (snapshot.connectionState ==
-                                      ConnectionState.waiting) {
-                                    return Container(
-                                      width: 90,
-                                      height: 90,
-                                      decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(20),
-                                        color: Colors.grey[200],
-                                      ),
-                                      child: Center(
-                                        child: CircularProgressIndicator(),
-                                      ),
-                                    );
-                                  } else if (snapshot.hasError) {
-                                    return Container(
-                                      width: 90,
-                                      height: 90,
-                                      decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(20),
-                                        color: Colors.grey[200],
-                                      ),
-                                      child: Center(
-                                        child: Text('Error'),
-                                      ),
-                                    );
-                                  } else {
-                                    return Container(
-                                      width: 90,
-                                      height: 90,
-                                      decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(20),
-                                        image: DecorationImage(
-                                          image: snapshot.data!,
-                                          fit: BoxFit.cover,
+                              if (imageUrl != null)
+                                FutureBuilder<ImageProvider>(
+                                  future: _loadImage(imageUrl),
+                                  builder: (context, snapshot) {
+                                    if (snapshot.connectionState ==
+                                        ConnectionState.waiting) {
+                                      return Container(
+                                        width: 90,
+                                        height: 90,
+                                        decoration: BoxDecoration(
+                                          borderRadius:
+                                              BorderRadius.circular(20),
+                                          color: Colors.grey[200],
                                         ),
-                                      ),
-                                    );
-                                  }
-                                },
-                              )
-                            else
-                              Container(
-                                width: 90,
-                                height: 90,
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(20),
-                                  color: const Color.fromARGB(255, 0, 0, 0),
-                                ),
-                                child: Center(
-                                  child: Text(
-                                    "No Image",
-                                    style: TextStyle(color: Colors.white),
+                                        child: Center(
+                                          child: CircularProgressIndicator(),
+                                        ),
+                                      );
+                                    } else if (snapshot.hasError) {
+                                      return Container(
+                                        width: 90,
+                                        height: 90,
+                                        decoration: BoxDecoration(
+                                          borderRadius:
+                                              BorderRadius.circular(20),
+                                          color: Colors.grey[200],
+                                        ),
+                                        child: Center(
+                                          child: Text('Error'),
+                                        ),
+                                      );
+                                    } else {
+                                      return Container(
+                                        width: 90,
+                                        height: 90,
+                                        decoration: BoxDecoration(
+                                          borderRadius:
+                                              BorderRadius.circular(20),
+                                          image: DecorationImage(
+                                            image: snapshot.data!,
+                                            fit: BoxFit.cover,
+                                          ),
+                                        ),
+                                      );
+                                    }
+                                  },
+                                )
+                              else
+                                Container(
+                                  width: 90,
+                                  height: 90,
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(20),
+                                    color: const Color.fromARGB(255, 0, 0, 0),
+                                  ),
+                                  child: Center(
+                                    child: Text(
+                                      "No Image",
+                                      style: TextStyle(color: Colors.white),
+                                    ),
                                   ),
                                 ),
-                              ),
-                          ],
+                            ],
+                          ),
                         ),
                       );
                     },
@@ -234,6 +253,9 @@ class _CashierPortalState extends State<CashierPortal> {
               child: SizedBox(
                 width: double.infinity,
                 child: ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: const Color.fromRGBO(218, 192, 163, 1),
+                  ),
                   onPressed: () {
                     Navigator.push(
                       context,
@@ -245,7 +267,10 @@ class _CashierPortalState extends State<CashierPortal> {
                       ),
                     );
                   },
-                  child: Text("Proceed to Checkout"),
+                  child: Text(
+                    "Proceed to Checkout",
+                    style: TextStyle(color: Colors.black),
+                  ),
                 ),
               ),
             ),

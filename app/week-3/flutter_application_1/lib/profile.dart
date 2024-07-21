@@ -43,14 +43,14 @@ class _ProfilePageState extends State<ProfilePage> {
                     height: 10,
                   ),
                   Text(
-                    "username : ${userData['username']}",
+                    "username : ${userData['name']}",
                     textAlign: TextAlign.center,
                   ),
                   SizedBox(
                     height: 10,
                   ),
                   Text(
-                    "Phone Number : ${userData['PhoneNumber']}",
+                    "Phone Number : ${userData['phoneNumber']}",
                     textAlign: TextAlign.center,
                   ),
                   SizedBox(

@@ -23,7 +23,7 @@ class _ProductlistState extends State<Productlist> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color.fromARGB(255, 43, 43, 43),
+      backgroundColor: const Color.fromRGBO(16, 44, 87, 1),
       appBar: AppBar(
         backgroundColor: Colors.black38,
         foregroundColor: Colors.white,
@@ -78,7 +78,16 @@ class _ProductlistState extends State<Productlist> {
                     width: 40,
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(20),
-                      color: const Color.fromARGB(255, 94, 94, 94),
+                      color: const Color.fromARGB(255, 32, 67, 120),
+                      boxShadow: [
+                        BoxShadow(
+                          color: const Color.fromARGB(255, 255, 255, 255)
+                              .withOpacity(0.05),
+                          spreadRadius: 2,
+                          blurRadius: 1,
+                          offset: Offset(-1, 1), // changes position of shadow
+                        ),
+                      ],
                     ),
                     child: Padding(
                       padding: const EdgeInsets.all(8.0),
@@ -89,25 +98,22 @@ class _ProductlistState extends State<Productlist> {
                           children: [
                             Column(
                               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
-                                  "Name: ${data['name']}" ??
-                                      'No name available',
+                                  "Name: ${data['name']}",
                                   style: TextStyle(color: Colors.white),
                                 ),
                                 Text(
-                                  "Brand: ${data['brand']}" ??
-                                      'No brand available',
+                                  "Brand: ${data['brand']}",
                                   style: TextStyle(color: Colors.white),
                                 ),
                                 Text(
-                                  "Quantity: ${data['quantity']}" ??
-                                      'No quantity available',
+                                  "Quantity: ${data['quantity']}",
                                   style: TextStyle(color: Colors.white),
                                 ),
                                 Text(
-                                  "Price: ${data['price']}" ??
-                                      'No price available',
+                                  "Price: ${data['price']}",
                                   style: TextStyle(color: Colors.white),
                                 ),
                               ],
@@ -183,6 +189,8 @@ class _ProductlistState extends State<Productlist> {
         },
       ),
       floatingActionButton: FloatingActionButton(
+        backgroundColor: const Color.fromRGBO(218, 192, 163, 1),
+        foregroundColor: Colors.black,
         onPressed: () => navigateToAddProduct(context),
         child: Icon(Icons.add),
       ),

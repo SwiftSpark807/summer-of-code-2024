@@ -36,6 +36,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
+      debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',
       theme: ThemeData(
         useMaterial3: true,
@@ -131,29 +132,6 @@ class PosSystem extends StatelessWidget {
           Text("Or via Social Media",
               style: TextStyle(
                   fontFamily: "Inter", color: Colors.white, fontSize: 14)),
-          Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-            Image.asset(
-              'assests/images/google.png',
-              width: 70,
-              height: 70,
-            ),
-            SizedBox(
-              width: 30,
-            ),
-            Image.asset(
-              'assests/images/facebook.png',
-              width: 70,
-              height: 70,
-            ),
-            SizedBox(
-              width: 30,
-            ),
-            Image.asset(
-              'assests/images/linkedin.png',
-              width: 47,
-              height: 47,
-            ),
-          ]),
         ],
       ))),
     );

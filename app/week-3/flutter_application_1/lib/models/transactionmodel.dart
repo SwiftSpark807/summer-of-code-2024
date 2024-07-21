@@ -7,6 +7,8 @@ class MyTransaction {
   final List<Map<String, dynamic>> products;
   final double totalPrice;
   final DateTime timestamp;
+  final String cashierName;
+  final String? pdfUrl; // Add pdfUrl to store the PDF link
 
   MyTransaction({
     required this.transactionId,
@@ -15,6 +17,8 @@ class MyTransaction {
     required this.products,
     required this.totalPrice,
     required this.timestamp,
+    required this.cashierName,
+    this.pdfUrl,
   });
 
   factory MyTransaction.fromFirestore(DocumentSnapshot doc) {
@@ -25,6 +29,8 @@ class MyTransaction {
     DateTime transactionTime = data['timestamp'] != null
         ? (data['timestamp'] as Timestamp).toDate()
         : DateTime.now(); // Use current time if timestamp is null
+    String cashierName = data['cashierName'] ?? '';
+    String? pdfUrl = data['pdfUrl']; // Optional field
 
     return MyTransaction(
       transactionId: doc.id,
@@ -33,6 +39,8 @@ class MyTransaction {
       products: List<Map<String, dynamic>>.from(data['products'] ?? []),
       totalPrice: (data['totalPrice'] ?? 0).toDouble(),
       timestamp: transactionTime,
+      cashierName: cashierName,
+      pdfUrl: pdfUrl,
     );
   }
 
@@ -44,6 +52,8 @@ class MyTransaction {
       'totalPrice': totalPrice,
       'timestamp':
           Timestamp.fromDate(timestamp), // Convert DateTime to Timestamp
+      'cashierName': cashierName,
+      'pdfUrl': pdfUrl, // Add pdfUrl to the map
     };
   }
 }
