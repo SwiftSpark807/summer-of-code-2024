@@ -38,22 +38,10 @@ class _TransactionsPageState extends State<TransactionsPage> {
   }
 
   Future<void> _downloadAndOpenPDF(String url, String fileName) async {
-  try {
-    Dio dio = Dio();
-
-    // Get the downloads directory
-    Directory? downloadsDir;
-    if (Platform.isAndroid) {
-      downloadsDir = await getExternalStorageDirectory();
-      // On Android, getExternalStorageDirectory() returns /storage/emulated/0/Android/data/com.example.yourapp/files
-      // We need to go one level up to get to /storage/emulated/0/Download
-      downloadsDir = Directory('/storage/emulated/0/Download');
-    } else if (Platform.isIOS) {
-      downloadsDir = await getDownloadsDirectory();
-    }
-
-    if (downloadsDir != null) {
-      String filePath = '${downloadsDir.path}/$fileName';
+    try {
+      Dio dio = Dio();
+      var dir = await getApplicationDocumentsDirectory();
+      String filePath = '${dir.path}/$fileName';
 
       await dio.download(url, filePath);
       ScaffoldMessenger.of(context).showSnackBar(
@@ -61,16 +49,12 @@ class _TransactionsPageState extends State<TransactionsPage> {
       );
 
       await OpenFile.open(filePath);
-    } else {
-      throw Exception('Could not find the downloads directory');
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Error downloading file: $e')),
+      );
     }
-  } catch (e) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text('Error downloading file: $e')),
-    );
   }
-}
-
 
   @override
   Widget build(BuildContext context) {

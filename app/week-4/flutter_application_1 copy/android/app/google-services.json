@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "95217763667",
+    "project_id": "pointofsalessystem-a8c1e",
+    "storage_bucket": "pointofsalessystem-a8c1e.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:95217763667:android:b0abe4bdea6be8738e4da6",
+        "android_client_info": {
+          "package_name": "com.example.flutter_application_1"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBQm-g-AJUIDjm9sQLnYEMiIpreQT7zm6o"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
